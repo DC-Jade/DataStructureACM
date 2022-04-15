@@ -3,23 +3,45 @@ using std::cin;
 using std::cout;
 #include <vector>
 using std::vector;
+#include <map>
+using std::map;
 
 #define N 200000
-#define K 1500000000
+//#define K 1500000000
 // void CountSort(const int (&ia)[N], int (&res_ia)[N], int n) {
 void CountSort(const int (&ia)[N], int (&res_ia)[N], int n) {
-  //res_ia[N] = {0};  // sorted array
-  vector<int> cnt_ia;  // count vector, array too short, which is located in stack
+  // res_ia[N] = {0};  // sorted array
+  //  vector<int> cnt_ia;  // count vector, array too short, which is located in stack
+  //  count map, save recurrence;
+  // TODO: check i whether exist in ia
+  
+
+  map<int, int> count_map;
+  for (int i = 0; i < N; ++i) {
+    if (count_map.find(i) != count_map.end()) {
+      ++count_map[i];
+    } else {
+      count_map.insert(std::pair<int, int>(i, 1));
+    }
+  }
+  
+
+  /*
   // count ia[i]
   for (int i = 0; i < K; ++i)
     cnt_ia.push_back(0);
   for (int i = 0; i < n; ++i) {
     ++cnt_ia[ia[i]];
   }
+  */
 
   // save in res_ia
-  for (int i = 0, j = 0; i < N; ++i) {
-    for (int k = 0; k < cnt_ia[i]; ++k) {
+  for (int i = 0, j = 0; i < n; ++i) {
+    //if (count_map.find(i) == count_map.end()) 
+    //  continue;
+    for (int k = 0;
+      count_map.find(i) != count_map.end() && 
+      k < count_map[i]; ++k) {
       // ia[i] refer to i's recurrence
       res_ia[j++] = i;
     }
@@ -88,6 +110,7 @@ int main() {
 
   //PrintIntArray(ia, N);
   CountSort(ia, res_ia, n);
+  PrintIntArray(ia, n);
   
   // remove deduplicated and print
   /*
@@ -99,6 +122,7 @@ int main() {
 
   //  remove deduplicated elements and print recurrence
   //PrintIntArray(res_ia, n);
-  DeduplicateCount(res_ia, n);
+  //DeduplicateCount(res_ia, n);
 }
 
+// tumor native
